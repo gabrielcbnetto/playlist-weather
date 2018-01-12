@@ -2,7 +2,7 @@ package br.com.playlist.weather.model;
 
 public enum Genre {
     ROCK("Rock", "rock"),
-    CLASSIC("Classic", "classic"),
+    CLASSIC("Classic", "classical"),
     POP("Pop", "pop"),
     PARTY("Party", "party");
     private final String prettyName;
