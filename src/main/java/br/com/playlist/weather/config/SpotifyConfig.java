@@ -1,4 +1,4 @@
-package br.com.playlist.weather.model;
+package br.com.playlist.weather.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

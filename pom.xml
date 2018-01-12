@@ -72,13 +72,42 @@
 	</dependencyManagement>
 
 	<build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+            </plugin>
 		</plugins>
+
 	</build>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <openweather.app-id>90ed74813d82d9580ddfec923fccbbc2</openweather.app-id>
+                <spotify.client-id>9b32588fadd34dacb1f742752463c0f6</spotify.client-id>
+                <spotify.client-secret>49eaa3c0b10749f0ab098162c0f535c4</spotify.client-secret>
+                <spotify.auth-url>https://accounts.spotify.com/api/token</spotify.auth-url>
+            </properties>
+        </profile>
+    </profiles>
 
 
 </project>

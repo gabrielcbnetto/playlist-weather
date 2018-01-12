@@ -1,9 +1,9 @@
 package br.com.playlist.weather.service.impl;
 
+import br.com.playlist.weather.config.SpotifyConfig;
 import br.com.playlist.weather.model.AuthTokenSpotify;
 import br.com.playlist.weather.model.Category;
 import br.com.playlist.weather.model.PlayList;
-import br.com.playlist.weather.model.SpotifyConfig;
 import br.com.playlist.weather.service.SpotifyQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
