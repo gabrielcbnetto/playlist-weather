@@ -47,7 +47,7 @@ public class SpotifyQueryServiceImpl implements SpotifyQueryService {
 //        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 //        body.add("grant_type", "client_credentials");
         HttpEntity<?> entity = new HttpEntity<>(headers);
-        return restTemplate.exchange(config.getTrackSpotifyUrl(), HttpMethod.GET, entity, PlayList.class, genre.getPrettyName()).getBody();
+        return restTemplate.exchange(config.getTrackSpotifyUrl(), HttpMethod.GET, entity, PlayList.class, genre.getQueryName()).getBody();
     }
 
     public void evictTokenFromCache() {
