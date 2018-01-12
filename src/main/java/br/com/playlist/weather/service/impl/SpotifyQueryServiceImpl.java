@@ -2,7 +2,7 @@ package br.com.playlist.weather.service.impl;
 
 import br.com.playlist.weather.config.SpotifyConfig;
 import br.com.playlist.weather.model.AuthTokenSpotify;
-import br.com.playlist.weather.model.Category;
+import br.com.playlist.weather.model.Genre;
 import br.com.playlist.weather.model.PlayList;
 import br.com.playlist.weather.service.SpotifyQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +40,14 @@ public class SpotifyQueryServiceImpl implements SpotifyQueryService {
     }
 
     @Override
-    public PlayList getTrackSuggestions(Category category) {
-        return null;
+    public PlayList getTrackSuggestions(SpotifyConfig config, Genre genre) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + getOauthToken(config));
+//        headers.add("Content-Type", "application/x-www-form-urlencoded");
+//        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+//        body.add("grant_type", "client_credentials");
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        return restTemplate.exchange(config.getTrackSpotifyUrl(), HttpMethod.GET, entity, PlayList.class, genre.getPrettyName()).getBody();
     }
 
     public void evictTokenFromCache() {

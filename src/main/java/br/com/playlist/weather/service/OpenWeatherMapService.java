@@ -4,7 +4,7 @@ import br.com.playlist.weather.config.OpenWeatherConfig;
 
 public interface OpenWeatherMapService {
 
-    float getTemperatureByCity(OpenWeatherConfig weatherConfig, String city);
+    double getTemperatureByCity(OpenWeatherConfig weatherConfig, String city);
 
-    float getTemperatureByLatLon(OpenWeatherConfig weatherConfig, int lat, int lon);
+    double getTemperatureByLatLon(OpenWeatherConfig weatherConfig, int lat, int lon);
 }

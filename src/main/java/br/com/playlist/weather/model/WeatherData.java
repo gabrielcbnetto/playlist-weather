@@ -3,19 +3,19 @@ package br.com.playlist.weather.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class WeatherData {
-    private float temp;
+    private double temp;
     private int pressure;
     private int humidity;
     @JsonProperty("temp_min")
-    private float tempMin;
+    private double tempMin;
     @JsonProperty("temp_max")
-    private float tempMax;
+    private double tempMax;
 
-    public float getTemp() {
+    public double getTemp() {
         return temp;
     }
 
-    public void setTemp(float temp) {
+    public void setTemp(double temp) {
         this.temp = temp;
     }
 
@@ -35,19 +35,19 @@ public class WeatherData {
         this.humidity = humidity;
     }
 
-    public float getTempMin() {
+    public double getTempMin() {
         return tempMin;
     }
 
-    public void setTempMin(float tempMin) {
+    public void setTempMin(double tempMin) {
         this.tempMin = tempMin;
     }
 
-    public float getTempMax() {
+    public double getTempMax() {
         return tempMax;
     }
 
-    public void setTempMax(float tempMax) {
+    public void setTempMax(double tempMax) {
         this.tempMax = tempMax;
     }
 

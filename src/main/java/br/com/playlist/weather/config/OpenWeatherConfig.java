@@ -5,14 +5,15 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenWeatherConfig {
-    @Value("${service.openweather.app-id")
+    @Value("${service.openweather.app-id}")
     private String openWeatherAppId;
 
-    @Value("${service.openweather.city-url")
+    @Value("${service.openweather.city-url}")
     private String cityUrl;
 
-    @Value("${service.openweather.cords-url")
+    @Value("${service.openweather.cords-url}")
     private String cordsUrl;
+
 
     public String getOpenWeatherAppId() {
         return openWeatherAppId;

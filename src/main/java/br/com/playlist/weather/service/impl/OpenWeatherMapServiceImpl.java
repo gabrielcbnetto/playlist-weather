@@ -12,14 +12,15 @@ public class OpenWeatherMapServiceImpl implements OpenWeatherMapService {
     private RestTemplate restTemplate = new RestTemplate();
 
     @Override
-    public float getTemperatureByCity(OpenWeatherConfig weatherConfig, String city) {
+    public double getTemperatureByCity(OpenWeatherConfig weatherConfig, String city) {
         // return restTemplate.getForObject("http://samples.openweathermap.org/data/2.5/weather?q=London&appid=b6907d289e10d714a6e88b30761fae22", CityTemperature.class).getMain().getTemp();
         //HttpEntity<?> request = new HttpEntity<>();
-        return restTemplate.getForObject("http://samples.openweathermap.org/data/2.5/weather?q={city}&appid={appid}", CityTemperature.class, city, weatherConfig.getOpenWeatherAppId()).getMain().getTemp();
+        return restTemplate.getForObject(weatherConfig.getCityUrl(), CityTemperature.class, city, weatherConfig.getOpenWeatherAppId()).getMain().getTemp();
     }
 
     @Override
-    public float getTemperatureByLatLon(OpenWeatherConfig weatherConfig, int lat, int lon) {
-        return restTemplate.getForObject("http://samples.openweathermap.org/data/2.5/weather?q=London&appid=b6907d289e10d714a6e88b30761fae22", CityTemperature.class).getMain().getTemp();
+    public double getTemperatureByLatLon(OpenWeatherConfig weatherConfig, int lat, int lon) {
+        return restTemplate.getForObject(weatherConfig.getCordsUrl(), CityTemperature.class, lat, lon, weatherConfig.getOpenWeatherAppId()).getMain().getTemp();
+
     }
 }

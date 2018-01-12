@@ -74,11 +74,22 @@
 	<build>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/main/resources/</directory>
+                <filtering>true</filtering>
                 <includes>
                     <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.yml</include>
                 </includes>
-                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources/</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                    <exclude>**/*.xml</exclude>
+                    <exclude>**/*.yml</exclude>
+                </excludes>
             </resource>
         </resources>
 		<plugins>
@@ -105,6 +116,10 @@
                 <spotify.client-id>9b32588fadd34dacb1f742752463c0f6</spotify.client-id>
                 <spotify.client-secret>49eaa3c0b10749f0ab098162c0f535c4</spotify.client-secret>
                 <spotify.auth-url>https://accounts.spotify.com/api/token</spotify.auth-url>
+                <spotify.track-url>https://api.spotify.com/v1/recommendations?limit=10&amp;seed_genres={genre}
+                </spotify.track-url>
+                <openweather.city-url>http://api.openweathermap.org/data/2.5/weather?q={city}&amp;appid={appid}&amp;units=metric</openweather.city-url>
+                <openweather.lat-lon-url>http://api.openweathermap.org/data/2.5/weather?lat={lat}&amp;lon={lon}&amp;appid={appid}&amp;units=metric</openweather.lat-lon-url>
             </properties>
         </profile>
     </profiles>

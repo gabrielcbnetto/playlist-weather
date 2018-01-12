@@ -4,13 +4,14 @@ import java.util.List;
 
 public class PlayList {
 
-	private List<String> songs;
 
-	public List<String> getSongs() {
-		return songs;
+	private List<Tracks> tracks;
+
+	public List<Tracks> getTracks() {
+		return tracks;
 	}
 
-	public void setSongs(List<String> songs) {
-		this.songs = songs;
+	public void setTracks(List<Tracks> tracks) {
+		this.tracks = tracks;
 	}
 }
