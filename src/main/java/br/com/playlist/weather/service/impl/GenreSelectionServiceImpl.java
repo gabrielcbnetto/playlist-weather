@@ -11,9 +11,9 @@ public class GenreSelectionServiceImpl implements GenreSelectionService {
     @Override
     public Genre getGenreByTemperature(double temperature) {
         Genre genre;
-        if (temperature > 30) {
+        if (temperature >= 30) {
             genre = Genre.PARTY;
-        } else if (temperature >= 15 && temperature <= 30) {
+        } else if (temperature >= 15 && temperature < 30) {
             genre = Genre.POP;
         } else if (temperature >= 10 && temperature < 15) {
             genre = Genre.ROCK;
