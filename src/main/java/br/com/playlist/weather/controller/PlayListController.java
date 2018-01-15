@@ -8,12 +8,17 @@ import br.com.playlist.weather.service.GenreSelectionService;
 import br.com.playlist.weather.service.OpenWeatherMapService;
 import br.com.playlist.weather.service.SpotifyAuthorizationService;
 import br.com.playlist.weather.service.SpotifyQueryService;
+import br.com.playlist.weather.validation.InRange;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
+@Validated
 public class PlayListController {
 
     @Autowired
@@ -41,7 +46,8 @@ public class PlayListController {
     }
 
     @RequestMapping(value = "/playlist", params = {"lat", "lon"})
-    public PlayList playListCity(@RequestParam(value = "lat") int lat, @RequestParam(value = "lon") int lon) {
+    public PlayList playListCity(@Valid @InRange(min = -90d, max = 90d) @RequestParam(value = "lat") double lat,
+                                 @Valid @InRange(min = -180d, max = 180d) @RequestParam(value = "lon") double lon) {
         double temp = openWeatherMapService.getTemperatureByLatLon(openWeatherConfig, lat, lon);
         Genre genre = genreSelectionService.getGenreByTemperature(temp);
         return spotifyQueryService.getTrackSuggestions(spotifyConfig, genre);

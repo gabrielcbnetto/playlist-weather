@@ -8,14 +8,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class GenreSelectionServiceImpl implements GenreSelectionService {
 
+    private static final double HOTTEMPERATURE = 30d;
+    private static final double COOLTEMPERATURE = 15d;
+    private static final double CHILLYTEMPERATURE = 10d;
+
     @Override
     public Genre getGenreByTemperature(double temperature) {
         Genre genre;
-        if (temperature >= 30) {
+        if (temperature >= HOTTEMPERATURE) {
             genre = Genre.PARTY;
-        } else if (temperature >= 15 && temperature < 30) {
+        } else if (temperature >= COOLTEMPERATURE) {
             genre = Genre.POP;
-        } else if (temperature >= 10 && temperature < 15) {
+        } else if (temperature >= CHILLYTEMPERATURE) {
             genre = Genre.ROCK;
         } else {
             genre = Genre.CLASSIC;

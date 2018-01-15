@@ -6,5 +6,5 @@ public interface OpenWeatherMapService {
 
     double getTemperatureByCity(OpenWeatherConfig weatherConfig, String city);
 
-    double getTemperatureByLatLon(OpenWeatherConfig weatherConfig, int lat, int lon);
+    double getTemperatureByLatLon(OpenWeatherConfig weatherConfig, double lat, double lon);
 }

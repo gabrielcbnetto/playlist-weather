@@ -1,6 +1,7 @@
 package br.com.playlist.weather.service.impl;
 
 import br.com.playlist.weather.config.OpenWeatherConfig;
+import br.com.playlist.weather.exception.CacheMissException;
 import br.com.playlist.weather.model.CityTemperature;
 import br.com.playlist.weather.service.OpenWeatherMapService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -25,26 +26,35 @@ public class OpenWeatherMapServiceImpl implements OpenWeatherMapService {
 
     @Override
     @HystrixCommand(fallbackMethod = "getCachedTemperature")
-    @CachePut(value = cacheKey, key = "#city")
+    @CachePut(value = cacheKey, key = "#city", unless = "#result == null")
     public double getTemperatureByCity(OpenWeatherConfig weatherConfig, String city) {
         return restTemplate.getForObject(weatherConfig.getCityUrl(), CityTemperature.class, city, weatherConfig.getOpenWeatherAppId()).getMain().getTemp();
     }
 
     @Override
     @HystrixCommand(fallbackMethod = "getCachedTemperature")
-    @CachePut(value = cacheKey, key = "{#lat, #lon}")
-    public double getTemperatureByLatLon(OpenWeatherConfig weatherConfig, int lat, int lon) {
+    @CachePut(value = cacheKey, key = "{#lat, #lon}", unless = "#result == null")
+    public double getTemperatureByLatLon(OpenWeatherConfig weatherConfig, double lat, double lon) {
         return restTemplate.getForObject(weatherConfig.getCordsUrl(), CityTemperature.class, lat, lon, weatherConfig.getOpenWeatherAppId()).getMain().getTemp();
 
     }
 
     protected double getCachedTemperature(OpenWeatherConfig weatherConfig, String city) {
-        return cacheManager.getCache(cacheKey).get(city, Double.class);
+        LOGGER.info("Returning cached temperature for city: " + city);
+        Double res = cacheManager.getCache(cacheKey).get(city, Double.class);
+        if (res == null) {
+            throw new CacheMissException("City not found in cache, and cant get live version");
+        }
+        return res;
     }
 
 
-    protected double getCachedTemperature(OpenWeatherConfig weatherConfig, int lat, int lon) {
+    protected double getCachedTemperature(OpenWeatherConfig weatherConfig, double lat, double lon) {
         LOGGER.info("Returning cached temperature for lat: " + lat + "lon: " + lon);
-        return cacheManager.getCache(cacheKey).get(Arrays.asList(lat, lon), Double.class);
+        Double res = cacheManager.getCache(cacheKey).get(Arrays.asList(lat, lon), Double.class);
+        if (res == null) {
+            throw new CacheMissException("Latitude and Longitude not found in cache, and cant get live version");
+        }
+        return res;
     }
 }

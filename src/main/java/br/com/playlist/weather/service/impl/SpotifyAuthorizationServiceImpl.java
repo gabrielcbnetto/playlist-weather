@@ -1,6 +1,7 @@
 package br.com.playlist.weather.service.impl;
 
 import br.com.playlist.weather.config.SpotifyConfig;
+import br.com.playlist.weather.exception.CacheMissException;
 import br.com.playlist.weather.model.AuthTokenSpotify;
 import br.com.playlist.weather.service.SpotifyAuthorizationService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -28,7 +29,7 @@ public class SpotifyAuthorizationServiceImpl implements SpotifyAuthorizationServ
     CacheManager cacheManager;
 
     @HystrixCommand(fallbackMethod = "getBadToken")
-    @Cacheable(value = KEY, unless = "#result!= null and #result.length()==0")
+    @Cacheable(value = KEY, unless = "#result != null and #result.length()==0")
     @Override
     public String getOauthToken(SpotifyConfig config) {
         LOGGER.info("Authenticating with spotify");
@@ -51,7 +52,6 @@ public class SpotifyAuthorizationServiceImpl implements SpotifyAuthorizationServ
     }
 
     public String getBadToken(SpotifyConfig config) {
-        LOGGER.info("Devolvendo vazio");
-        return null;
+        throw new CacheMissException("Cant obtain spotify auth token, try again later");
     }
 }

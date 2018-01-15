@@ -1,6 +1,7 @@
 package br.com.playlist.weather.service.impl;
 
 import br.com.playlist.weather.config.SpotifyConfig;
+import br.com.playlist.weather.exception.CacheMissException;
 import br.com.playlist.weather.model.Genre;
 import br.com.playlist.weather.model.PlayList;
 import br.com.playlist.weather.service.SpotifyAuthorizationService;
@@ -59,6 +60,11 @@ public class SpotifyQueryServiceImpl implements SpotifyQueryService {
 
     public PlayList getTrackFromCache(SpotifyConfig config, Genre genre) {
         LOGGER.info("retornando playlist do cache");
-        return cacheManager.getCache(cacheKey).get(genre.getQueryName(), PlayList.class);
+        PlayList playList = cacheManager.getCache(cacheKey).get(genre.getQueryName(), PlayList.class);
+        if (playList != null) {
+            return cacheManager.getCache(cacheKey).get(genre.getQueryName(), PlayList.class);
+        } else {
+            throw new CacheMissException("Playlist not found in cache and api service offline");
+        }
     }
 }
