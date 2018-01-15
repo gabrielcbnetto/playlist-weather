@@ -1,20 +1,18 @@
 package br.com.playlist.weather.service.impl;
 
 import br.com.playlist.weather.config.SpotifyConfig;
-import br.com.playlist.weather.model.AuthTokenSpotify;
 import br.com.playlist.weather.model.Genre;
 import br.com.playlist.weather.model.PlayList;
 import br.com.playlist.weather.service.SpotifyAuthorizationService;
 import br.com.playlist.weather.service.SpotifyQueryService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -23,32 +21,21 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class SpotifyQueryServiceImpl implements SpotifyQueryService {
 
-    private static final String KEY = "AuthToken";
+    private static final String cacheKey = "SpotifyTracksCache";
     private static final Logger LOGGER = LogManager.getLogger(SpotifyQueryServiceImpl.class);
     @Autowired
     SpotifyAuthorizationService spotifyAuthorizationService;
     private RestTemplate restTemplate;
 
+    @Autowired
+    CacheManager cacheManager;
+
     public SpotifyQueryServiceImpl() {
         this.restTemplate = new RestTemplate();
     }
 
-    @Override
-    @Cacheable(cacheNames = KEY)
-    public String getOauthToken(SpotifyConfig config) {
-        LOGGER.info("Authenticating with spotify");
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", config.getBasicAuth());
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "client_credentials");
-        HttpEntity<?> entity = new HttpEntity<Object>(body, headers);
-        String response;
-        ResponseEntity<AuthTokenSpotify> clientResponse = restTemplate.exchange(config.getAuthSpotifyUrl(), HttpMethod.POST, entity, AuthTokenSpotify.class);
-        response = clientResponse.getBody().getAccessToken();
-        LOGGER.info("Authorization Token: " + response);
-        return response;
-    }
-
+    @HystrixCommand(fallbackMethod = "getTrackFromCache")
+    @CachePut(value = cacheKey, key = "#genre.queryName")
     @Override
     public PlayList getTrackSuggestions(SpotifyConfig config, Genre genre) {
         HttpHeaders headers = new HttpHeaders();
@@ -70,10 +57,8 @@ public class SpotifyQueryServiceImpl implements SpotifyQueryService {
         }
     }
 
-    @CacheEvict(cacheNames = KEY)
-    public void evictTokenFromCache() {
-        LOGGER.info("Evicting cache from key: " + KEY);
+    public PlayList getTrackFromCache(SpotifyConfig config, Genre genre) {
+        LOGGER.info("retornando playlist do cache");
+        return cacheManager.getCache(cacheKey).get(genre.getQueryName(), PlayList.class);
     }
-
-
 }
