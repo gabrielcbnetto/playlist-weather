@@ -39,15 +39,15 @@ public class PlayListController {
     SpotifyAuthorizationService spotifyAuthorizationService;
 
     @RequestMapping(value = "/playlist", params = "city")
-	public PlayList playListCity(@RequestParam(value="city") String city) {
+    public PlayList playList(@RequestParam(value = "city") String city) {
         double temp = openWeatherMapService.getTemperatureByCity(openWeatherConfig, city);
         Genre genre = genreSelectionService.getGenreByTemperature(temp);
         return spotifyQueryService.getTrackSuggestions(spotifyConfig, genre);
     }
 
     @RequestMapping(value = "/playlist", params = {"lat", "lon"})
-    public PlayList playListCity(@Valid @InRange(min = -90d, max = 90d) @RequestParam(value = "lat") double lat,
-                                 @Valid @InRange(min = -180d, max = 180d) @RequestParam(value = "lon") double lon) {
+    public PlayList playList(@Valid @InRange(min = -90d, max = 90d) @RequestParam(value = "lat") double lat,
+                             @Valid @InRange(min = -180d, max = 180d) @RequestParam(value = "lon") double lon) {
         double temp = openWeatherMapService.getTemperatureByLatLon(openWeatherConfig, lat, lon);
         Genre genre = genreSelectionService.getGenreByTemperature(temp);
         return spotifyQueryService.getTrackSuggestions(spotifyConfig, genre);
