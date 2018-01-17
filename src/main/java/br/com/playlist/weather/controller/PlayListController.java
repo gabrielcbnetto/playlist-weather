@@ -6,7 +6,6 @@ import br.com.playlist.weather.model.Genre;
 import br.com.playlist.weather.model.PlayList;
 import br.com.playlist.weather.service.GenreSelectionService;
 import br.com.playlist.weather.service.OpenWeatherMapService;
-import br.com.playlist.weather.service.SpotifyAuthorizationService;
 import br.com.playlist.weather.service.SpotifyQueryService;
 import br.com.playlist.weather.validation.InRange;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,6 @@ public class PlayListController {
     @Autowired
     GenreSelectionService genreSelectionService;
 
-    @Autowired
-    SpotifyAuthorizationService spotifyAuthorizationService;
 
     @RequestMapping(value = "/playlist", params = "city")
     public PlayList playList(@RequestParam(value = "city") String city) {
@@ -53,14 +50,4 @@ public class PlayListController {
         return spotifyQueryService.getTrackSuggestions(spotifyConfig, genre);
     }
 
-    @RequestMapping("/token")
-    public String getOauth() {
-        return spotifyAuthorizationService.getOauthToken(spotifyConfig);
-    }
-
-    @RequestMapping("/refreshToken")
-    public String getNewOauth() {
-        spotifyAuthorizationService.evictTokenFromCache();
-        return spotifyAuthorizationService.getOauthToken(spotifyConfig);
-    }
 }
