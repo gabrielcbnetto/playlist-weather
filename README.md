@@ -76,11 +76,11 @@ Also, make it easy to deploy/run your service(s) locally (consider using some co
 ## Deployment to Elastic Beanstalk
 * First Deployment to environment speficied in pom.xml
 ```
-.\mvnw beanstalk:upload-source-bundle beanstalk:create-application-version beanstalk:create-environment
+./mvnw beanstalk:upload-source-bundle beanstalk:create-application-version beanstalk:create-environment
 ```
 * Update environment speficied in pom.xml
 ```
-mvn beanstalk:upload-source-bundle beanstalk:create-application-version beanstalk:update-environment
+./mvnw beanstalk:upload-source-bundle beanstalk:create-application-version beanstalk:update-environment
 ```
 
   
