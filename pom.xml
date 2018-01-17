@@ -128,23 +128,6 @@
 					<environmentRef>playlist-weather</environmentRef>
 					<solutionStack>64bit Amazon Linux 2017.09 v2.6.3 running Java 8</solutionStack>
 					<!-- will save as s3://[bucket name]/[artifactId]/artifactId-version-TIMESTAMP.war -->
-					<configurationTemplates>
-						<configurationTemplate>
-							<id>default</id>
-							<optionSettings>
-								<optionSetting>
-									<namespace>aws:elasticbeanstalk:environment</namespace>
-									<optionName>EnvironmentType</optionName>
-									<value>SingleInstance</value>
-								</optionSetting>
-								<optionSetting>
-									<namespace>aws:autoscaling:launchconfiguration</namespace>
-									<optionName>EC2KeyName</optionName>
-									<value>gabriel</value>
-								</optionSetting>
-							</optionSettings>
-						</configurationTemplate>
-					</configurationTemplates>
 				</configuration>
 			</plugin>
 			<plugin>
